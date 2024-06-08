@@ -1,0 +1,118 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background: url('../images/photo-1576072446580-32468f1b5439.jpg') no-repeat center center fixed;
+    background-size: cover; /* Ajusta la imagen para que cubra toda la pantalla */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-button {
+    background-color: #A9270B; /* Rojo navideño */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.main-button:hover {
+    background-color: #b22222; /* Rojo más oscuro al pasar el ratón */
+}
+
+h1 {
+    color: #000000; /* Negro para mejor contraste */
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+p {
+    color: #000000; /* Negro para mejor contraste */
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.header {
+    background-color: #A9270B; /* Rojo */
+    color: white;
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    font-family: 'Pacifico', cursive; /* Fuente diferente para la cabecera */
+}
+
+.nav-bar {
+    background-color: #A9270B; /* Verde oscuro semi-transparente */
+    color: white;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    z-index: 999;
+}
+
+.nav-bar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    transition: color 0.3s ease;
+}
+
+.nav-bar a:hover {
+    color: #ff0000; /* Rojo navideño */
+}
+
+.footer {
+    background-color: rgba(51, 51, 51, 0.8); /* Negro semi-transparente */
+    color: white;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.main-content {
+    margin-top: 140px; /* Ajustado para el header y nav-bar fijos */
+    margin-bottom: 60px; /* Ajustado para el footer fijo */
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-content img {
+    max-width: 200px; /* Tamaño ajustado de la imagen */
+    margin-top: 20px;
+}
+
+.main-content .welcome-text {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.main-content .description-text {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
