@@ -29,6 +29,6 @@ DearSanta es una aplicación web para gestionar listas de regalos, ideal para oc
 
 1. **Clonar el Repositorio:**
    ```bash
-   git clone https://github.com/tu-usuario/DearSanta.git
+   git clone https://github.com/miguelnr77/DearSanta.git
    cd DearSanta
    ```
