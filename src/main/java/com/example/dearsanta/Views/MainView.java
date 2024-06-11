@@ -1,4 +1,4 @@
-package com.example.dearsanta.views;
+package com.example.dearsanta.Views;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -36,29 +36,29 @@ public class MainView extends VerticalLayout {
         // Navigation Bar
         navBar = new HorizontalLayout();
         navBar.addClassName("nav-bar");
-        Anchor homeLink = new Anchor("", "Home");
-        Anchor aboutLink = new Anchor("#", "About");
-        Anchor contactLink = new Anchor("#", "Contact");
+        Anchor homeLink = new Anchor("", "Inicio");
+        Anchor aboutLink = new Anchor("#", "Acerca De");
+        Anchor contactLink = new Anchor("#", "Contacto");
         navBar.add(homeLink, aboutLink, contactLink);
 
         // Footer
         footer = new Div();
-        footer.setText("© 2024 DearSanta. All rights reserved.");
+        footer.setText("© 2024 DearSanta. ");
         footer.addClassName("footer");
 
         // Main Content
         mainContent = new Div();
         mainContent.addClassName("main-content");
 
-        welcomeText = new H1("Welcome to DearSanta!");
+        welcomeText = new H1("BIENVENIDO A DEARSANTA!");
         welcomeText.addClassName("welcome-text");
-        descriptionText = new Paragraph("Manage your gift lists easily and efficiently.");
+        descriptionText = new Paragraph("¡Crea, modifica y organiza de la mejor forma tus listas de regalos!");
         descriptionText.addClassName("description-text");
 
-        registerButton = new Button("Register", e ->
+        registerButton = new Button("Registrarse", e ->
                 getUI().ifPresent(ui -> ui.navigate("register"))
         );
-        loginButton = new Button("Login", e ->
+        loginButton = new Button("Iniciar sesión", e ->
                 getUI().ifPresent(ui -> ui.navigate("login"))
         );
 
@@ -68,13 +68,8 @@ public class MainView extends VerticalLayout {
         HorizontalLayout buttonsLayout = new HorizontalLayout(registerButton, loginButton);
         buttonsLayout.setSpacing(true);
 
-        // Adding a Christmas tree image
-        Image christmasTree = new Image("images/christmas-tree.png", "Christmas Tree");
-        christmasTree.addClassName("christmas-tree");
-
-        mainContent.add(welcomeText, descriptionText, buttonsLayout, christmasTree);
+        mainContent.add(welcomeText, descriptionText, buttonsLayout);
 
         add(header, navBar, mainContent, footer);
     }
 }
-

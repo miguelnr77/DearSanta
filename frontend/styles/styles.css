@@ -1,3 +1,4 @@
+/* General Styles */
 body, html {
     margin: 0;
     padding: 0;
@@ -9,38 +10,10 @@ body, html {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    box-sizing: border-box;
 }
 
-.main-button {
-    background-color: #A9270B; /* Rojo navideño */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 5px;
-    margin: 10px;
-}
-
-.main-button:hover {
-    background-color: #b22222; /* Rojo más oscuro al pasar el ratón */
-}
-
-h1 {
-    color: #000000; /* Negro para mejor contraste */
-    font-size: 28px;
-    font-weight: bold;
-    margin-top: 20px;
-}
-
-p {
-    color: #000000; /* Negro para mejor contraste */
-    font-size: 18px;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
+/* Header */
 .header {
     background-color: #A9270B; /* Rojo */
     color: white;
@@ -55,17 +28,20 @@ p {
     font-family: 'Pacifico', cursive; /* Fuente diferente para la cabecera */
 }
 
+/* Navigation Bar */
 .nav-bar {
-    background-color: #A9270B; /* Verde oscuro semi-transparente */
+    background-color: #A9270B; /* Rojo navideño */
     color: white;
     padding: 10px;
     width: 100%;
-    text-align: center;
-    font-size: 18px;
+    display: flex;
+    justify-content: center; /* Center the nav bar items */
+    align-items: center;
     position: fixed;
-    top: 60px;
+    top: 60px; /* Below the header */
     left: 0;
     z-index: 999;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .nav-bar a {
@@ -73,24 +49,15 @@ p {
     text-decoration: none;
     margin: 0 15px;
     transition: color 0.3s ease;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .nav-bar a:hover {
     color: #ff0000; /* Rojo navideño */
 }
 
-.footer {
-    background-color: rgba(51, 51, 51, 0.8); /* Negro semi-transparente */
-    color: white;
-    padding: 10px;
-    width: 100%;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-}
-
+/* Main Content */
 .main-content {
     margin-top: 140px; /* Ajustado para el header y nav-bar fijos */
     margin-bottom: 60px; /* Ajustado para el footer fijo */
@@ -110,9 +77,109 @@ p {
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 20px;
+    color: #000000; /* Negro para mejor contraste */
 }
 
 .main-content .description-text {
     font-size: 20px;
     margin-bottom: 20px;
+    color: #000000; /* Negro para mejor contraste */
+}
+
+.main-button {
+    background-color: #A9270B; /* Rojo navideño */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.main-button:hover {
+    background-color: #b22222; /* Rojo más oscuro al pasar el ratón */
+}
+
+/* Footer */
+.footer {
+    background-color: rgba(51, 51, 51, 0.8); /* Negro semi-transparente */
+    color: white;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Register Form */
+.register-form {
+    background-color: rgba(255, 255, 255, 0.9); /* Blanco semi-transparente */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.register-form h1 {
+    color: #A9270B; /* Rojo navideño */
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.register-form .form-field {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.register-form .form-field input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.register-form .form-field input:focus {
+    border-color: #A9270B; /* Rojo navideño */
+    outline: none;
+}
+
+.register-form .register-button {
+    background-color: #A9270B; /* Rojo navideño */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    margin-top: 20px;
+    width: calc(100% - 20px);
+}
+
+.register-form .register-button:hover {
+    background-color: #b22222; /* Rojo más oscuro al pasar el ratón */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-bar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-bar a {
+        margin: 10px 0;
+    }
+
+    .main-content {
+        margin-top: 180px; /* Adjusted for header and nav-bar */
+    }
 }
