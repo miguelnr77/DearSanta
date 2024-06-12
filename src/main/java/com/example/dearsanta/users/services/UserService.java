@@ -7,11 +7,13 @@ import com.example.dearsanta.users.repositories.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,6 +29,9 @@ public class UserService {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public String registerUser(User user) {
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
@@ -34,13 +39,14 @@ public class UserService {
             return "User already exists";
         }
 
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Codificar la contraseña
         user.setEnabled(false);
         userRepository.save(user);
 
         VerificationToken token = new VerificationToken(user, generateToken());
         tokenRepository.save(token);
 
-        // Send email with the token
+        // Enviar correo electrónico con el token
         sendVerificationEmail(user.getEmail(), token.getToken());
 
         return "Registration successful";
@@ -54,6 +60,15 @@ public class UserService {
         User user = verificationToken.getUser();
         user.setEnabled(true);
         userRepository.save(user);
+    }
+
+    public boolean authenticate(String email, String password) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return passwordEncoder.matches(password, user.getPassword());
+        }
+        return false;
     }
 
     private String generateToken() {

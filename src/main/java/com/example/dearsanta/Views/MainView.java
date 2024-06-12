@@ -57,11 +57,11 @@ public class MainView extends VerticalLayout {
         registerButton = new Button("Registrarse", e ->
                 getUI().ifPresent(ui -> ui.navigate("register"))
         );
+        registerButton.addClassName("main-button");
+
         loginButton = new Button("Iniciar sesión", e ->
                 getUI().ifPresent(ui -> ui.navigate("login"))
         );
-
-        registerButton.addClassName("main-button");
         loginButton.addClassName("main-button");
 
         HorizontalLayout buttonsLayout = new HorizontalLayout(registerButton, loginButton);

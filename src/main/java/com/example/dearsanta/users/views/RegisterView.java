@@ -14,8 +14,8 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
-@Route("register")
-@CssImport("./styles/register-styles.css")
+@Route("/register")
+@CssImport("./styles/styles.css")
 public class RegisterView extends VerticalLayout {
 
     private final RestTemplate restTemplate;

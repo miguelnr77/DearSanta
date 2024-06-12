@@ -15,7 +15,7 @@ body, html {
 
 /* Header */
 .header {
-    background-color: #A9270B; /* Rojo */
+    background-color: #A9270B;
     color: white;
     padding: 15px;
     width: 100%;
@@ -25,12 +25,12 @@ body, html {
     top: 0;
     left: 0;
     z-index: 1000;
-    font-family: 'Pacifico', cursive; /* Fuente diferente para la cabecera */
+    font-family: 'Pacifico', cursive;
 }
 
 /* Navigation Bar */
 .nav-bar {
-    background-color: #A9270B; /* Rojo navideño */
+    background-color: #A9270B;
     color: white;
     padding: 10px;
     width: 100%;
@@ -54,7 +54,7 @@ body, html {
 }
 
 .nav-bar a:hover {
-    color: #ff0000; /* Rojo navideño */
+    color: #ff0000;
 }
 
 /* Main Content */
@@ -115,44 +115,41 @@ body, html {
     z-index: 1000;
 }
 
-/* Register Form */
-.register-form {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
+/* Form Styles */
+.form-title {
+    color: #A9270B;
+    margin-top: 20px;
+}
+
+.form-container {
+    margin-top: 20px;
     max-width: 400px;
     width: 100%;
-    margin-top: 160px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.register-form h1 {
-    color: #A9270B; /* Rojo navideño */
-    font-size: 28px;
-    margin-bottom: 20px;
-}
-
-.register-form .form-field {
-    margin-bottom: 20px;
+.form-container vaadin-text-field,
+.form-container vaadin-password-field,
+.form-container vaadin-button {
     width: 100%;
+    margin-bottom: 10px;
 }
 
-.register-form .form-field input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
+.form-container vaadin-button {
+    background-color: #A9270B;
+    color: white;
 }
 
-.register-form .form-field input:focus {
-    border-color: #A9270B; /* Rojo navideño */
-    outline: none;
+.form-container vaadin-button:hover {
+    background-color: #b22222;
 }
 
-.register-form .register-button {
-    background-color: #A9270B; /* Rojo navideño */
+.form-button {
+    background-color: #A9270B;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -160,11 +157,11 @@ body, html {
     cursor: pointer;
     transition: background-color 0.3s ease;
     border-radius: 5px;
-    width: calc(100% - 20px);
+    margin-top: 20px;
 }
 
-.register-form .register-button:hover {
-    background-color: #b22222; /* Rojo más oscuro al pasar el ratón */
+.form-button:hover {
+    background-color: #b22222;
 }
 
 /* Responsive Design */
