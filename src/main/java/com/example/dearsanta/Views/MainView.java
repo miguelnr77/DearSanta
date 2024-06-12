@@ -5,7 +5,6 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -37,8 +36,8 @@ public class MainView extends VerticalLayout {
         navBar = new HorizontalLayout();
         navBar.addClassName("nav-bar");
         Anchor homeLink = new Anchor("", "Inicio");
-        Anchor aboutLink = new Anchor("#", "Acerca De");
-        Anchor contactLink = new Anchor("#", "Contacto");
+        Anchor aboutLink = new Anchor("about", "Acerca De");
+        Anchor contactLink = new Anchor("contact", "Contacto");
         navBar.add(homeLink, aboutLink, contactLink);
 
         // Footer

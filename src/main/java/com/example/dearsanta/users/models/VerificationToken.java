@@ -1,31 +1,39 @@
 package com.example.dearsanta.users.models;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+
+import java.util.Date;
 
 @Entity
 public class VerificationToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String token;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    private LocalDateTime expiryDate;
+    private Date expiryDate;
 
     public VerificationToken() {}
 
-    public VerificationToken(String token, User user) {
-        this.token = token;
+    public VerificationToken(User user, String token) {
         this.user = user;
-        this.expiryDate = LocalDateTime.now().plusDays(1);
+        this.token = token;
+        this.expiryDate = calculateExpiryDate();
     }
 
-    // Getters y setters
+    private Date calculateExpiryDate() {
+        // Expiry time set to 24 hours
+        final int EXPIRATION = 24 * 60;
+        return new Date(System.currentTimeMillis() + (EXPIRATION * 60 * 1000));
+    }
+
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -50,11 +58,11 @@ public class VerificationToken {
         this.user = user;
     }
 
-    public LocalDateTime getExpiryDate() {
+    public Date getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(LocalDateTime expiryDate) {
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 }

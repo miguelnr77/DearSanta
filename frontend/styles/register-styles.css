@@ -57,7 +57,7 @@ body, html {
     color: #ff0000; /* Rojo navideño */
 }
 
-/* Main Content */
+/* Register Form */
 .main-content {
     margin-top: 140px;
     margin-bottom: 60px;
@@ -68,54 +68,6 @@ body, html {
     align-items: center;
 }
 
-.main-content img {
-    max-width: 200px;
-    margin-top: 20px;
-}
-
-.main-content .welcome-text {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #000000;
-}
-
-.main-content .description-text {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: #000000;
-}
-
-.main-button {
-    background-color: #A9270B;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 5px;
-    margin: 10px;
-}
-
-.main-button:hover {
-    background-color: #b22222;
-}
-
-/* Footer */
-.footer {
-    background-color: rgba(51, 51, 51, 0.8);
-    color: white;
-    padding: 10px;
-    width: 100%;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-}
-
-/* Register Form */
 .register-form {
     background-color: rgba(255, 255, 255, 0.9);
     padding: 30px;
@@ -124,7 +76,7 @@ body, html {
     text-align: center;
     max-width: 400px;
     width: 100%;
-    margin-top: 160px;
+    margin-top: 20px;
 }
 
 .register-form h1 {
@@ -165,6 +117,19 @@ body, html {
 
 .register-form .register-button:hover {
     background-color: #b22222; /* Rojo más oscuro al pasar el ratón */
+}
+
+/* Footer */
+.footer {
+    background-color: rgba(51, 51, 51, 0.8);
+    color: white;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 /* Responsive Design */
