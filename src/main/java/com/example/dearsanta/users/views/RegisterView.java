@@ -89,7 +89,9 @@ public class RegisterView extends VerticalLayout {
             }
         });
 
-        mainContent.add(title, nameField, emailField, passwordField, registerButton);
+        Anchor loginLink = new Anchor("login", "¿Ya se encuentra registrado? Inicie sesión!");
+
+        mainContent.add(title, nameField, emailField, passwordField, registerButton, loginLink);
 
         add(header, navBar, mainContent, footer);
     }

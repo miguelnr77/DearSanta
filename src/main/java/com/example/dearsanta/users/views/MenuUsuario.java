@@ -8,63 +8,48 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Route("menu-usuario")
 @CssImport("./styles/styles.css")
-public class MenuUsuario extends VerticalLayout implements BeforeEnterObserver {
-
-    private final AuthService authService;
-    private final HttpServletRequest request;
+public class MenuUsuario extends VerticalLayout {
 
     @Autowired
-    public MenuUsuario(AuthService authService, HttpServletRequest request) {
-        this.authService = authService;
-        this.request = request;
+    private AuthService authService;
 
+    @Autowired
+    public MenuUsuario(HttpServletRequest request) {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSizeFull();
-        getStyle().set("justify-content", "center");
 
-        User user = authService.getAuthenticatedUser(request);
-
-        // Header
         Div header = new Div();
         header.setText("DearSanta");
         header.addClassName("header");
 
-        // Welcome Message
-        H1 welcomeText = new H1("¡Bienvenido, " + (user != null ? user.getEmail() : "") + "!");
-        welcomeText.addClassName("welcome-text");
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        String userName = user != null ? user.getName() : "Usuario";
 
-        // Options
-        Button mantenimientoButton = new Button("Mantenimiento de allegados", e -> {
-            // Acción para Mantenimiento de allegados
+        H1 title = new H1("¡Bienvenido " + userName + "!");
+        title.addClassName("welcome-text");
+
+        Button maintenanceButton = new Button("Mantenimiento de Allegados", e ->
+                getUI().ifPresent(ui -> ui.navigate("relatives"))
+        );
+        maintenanceButton.addClassName("main-button");
+
+        Button logoutButton = new Button("Cerrar Sesión", e -> {
+            authService.logout(request);
+            getUI().ifPresent(ui -> {
+                ui.navigate("login");
+                ui.getPage().executeJs("window.location.reload();");
+            });
         });
-        mantenimientoButton.addClassName("main-button");
+        logoutButton.addClassName("main-button");
 
-        Button listasButton = new Button("Mis listas", e -> {
-            // Acción para Mis listas
-        });
-        listasButton.addClassName("main-button");
-
-        // Footer
-        Div footer = new Div();
-        footer.setText("© 2024 DearSanta. Todos los derechos reservados.");
-        footer.addClassName("footer");
-
-        add(header, welcomeText, mantenimientoButton, listasButton, footer);
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-        if (!authService.isAuthenticated(request)) {
-            event.forwardTo("login");
-        }
+        add(header, title, maintenanceButton, logoutButton);
     }
 }

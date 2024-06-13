@@ -3,20 +3,27 @@ package com.example.dearsanta.users.views;
 import com.example.dearsanta.users.services.AuthService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.List;
+
 @Route("login")
 @CssImport("./styles/styles.css")
-public class LoginView extends VerticalLayout {
+public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     private final AuthService authService;
     private final HttpServletRequest request;
@@ -42,7 +49,7 @@ public class LoginView extends VerticalLayout {
         TextField emailField = new TextField("Email");
         PasswordField passwordField = new PasswordField("Contraseña");
 
-        Paragraph errorMessage = new Paragraph();
+        Div errorMessage = new Div();
         errorMessage.setVisible(false);
 
         Button loginButton = new Button("Iniciar Sesión", e -> {
@@ -56,11 +63,23 @@ public class LoginView extends VerticalLayout {
         });
         loginButton.addClassName("main-button");
 
+        // Register link
+        Anchor registerLink = new Anchor("register", "¿No tienes una cuenta? Regístrate!");
+        registerLink.addClassName("register-link");
+
         // Footer
         Div footer = new Div();
         footer.setText("© 2024 DearSanta. Todos los derechos reservados.");
         footer.addClassName("footer");
 
-        add(header, loginHeader, emailField, passwordField, loginButton, errorMessage, footer);
+        add(header, loginHeader, emailField, passwordField, loginButton, registerLink, errorMessage, footer);
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        List<String> logoutParam = event.getLocation().getQueryParameters().getParameters().get("logout");
+        if (logoutParam != null && !logoutParam.isEmpty()) {
+            Notification.show("Has cerrado la sesión.", 3000, Notification.Position.TOP_CENTER);
+        }
     }
 }
