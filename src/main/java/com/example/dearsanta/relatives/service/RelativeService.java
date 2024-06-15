@@ -28,4 +28,8 @@ public class RelativeService {
     public List<Relative> getRelativesByUserId(Long userId) {
         return relativeRepository.findByUserId(userId);
     }
+
+    public List<Relative> findAll() {
+        return relativeRepository.findAll();
+    }
 }

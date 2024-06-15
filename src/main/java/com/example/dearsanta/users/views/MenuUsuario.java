@@ -41,6 +41,11 @@ public class MenuUsuario extends VerticalLayout {
         );
         maintenanceButton.addClassName("main-button");
 
+        Button myListsButton = new Button("Mis Listas", e ->
+                getUI().ifPresent(ui -> ui.navigate("gift-lists"))
+        );
+        myListsButton.addClassName("main-button");
+
         Button logoutButton = new Button("Cerrar Sesión", e -> {
             authService.logout(request);
             getUI().ifPresent(ui -> {
@@ -50,6 +55,6 @@ public class MenuUsuario extends VerticalLayout {
         });
         logoutButton.addClassName("main-button");
 
-        add(header, title, maintenanceButton, logoutButton);
+        add(header, title, maintenanceButton, myListsButton, logoutButton);
     }
 }
