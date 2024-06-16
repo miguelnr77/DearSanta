@@ -41,7 +41,7 @@ public class AboutView extends VerticalLayout {
         mainContent.addClassName("main-content");
 
         H1 title = new H1("Acerca De");
-        Paragraph description = new Paragraph("Esta es la vista de Acerca De.");
+        Paragraph description = new Paragraph("DearSanta es creada con motivo de solucionar la complicada papeleta de las listas de compras a las personas. Con ella podemos crear listas e incluir en ellas regalos con diferentes características.");
 
         mainContent.add(title, description);
 

@@ -11,9 +11,11 @@ import com.example.dearsanta.users.services.AuthService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -31,10 +33,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
-@PageTitle("Edit Gifts")
+@PageTitle("Editar Regalos")
 @Route(value = "edit-gift")
 @PermitAll
 @RequestScope
+@CssImport("./styles/styles.css")
 public class EditGiftView extends VerticalLayout implements HasUrlParameter<Long> {
 
     private final GiftService giftService;
@@ -56,8 +59,9 @@ public class EditGiftView extends VerticalLayout implements HasUrlParameter<Long
         this.user = authService.getAuthenticatedUser(request);
 
         setSizeFull();
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         configureGrid();
-        configureButtons();
+
     }
 
     @Override
@@ -65,7 +69,10 @@ public class EditGiftView extends VerticalLayout implements HasUrlParameter<Long
         this.giftListId = parameter;
         this.giftList = giftListService.getGiftListWithGifts(parameter);
         if (giftList != null) {
-            add(new HorizontalLayout(new TextField("Lista de regalos: " + giftList.getName())));
+
+            H1 listMessage = new H1("Lista: " + giftList.getName());
+            listMessage.addClassName("list-message");
+            add(listMessage, createButtonLayout(), giftGrid);
             updateGiftList();
         }
     }
@@ -75,27 +82,35 @@ public class EditGiftView extends VerticalLayout implements HasUrlParameter<Long
         giftGrid.setSizeFull();
         giftGrid.setColumns("name", "price", "status", "url");
 
-        // Custom column for relative name
-        giftGrid.addColumn(gift -> gift.getRelative() != null ? gift.getRelative().getName() : "No Relative")
-                .setHeader("Relative");
 
-        // Add an edit button column
-        giftGrid.addComponentColumn(gift -> new Button("Edit", click -> openEditDialog(gift)))
-                .setHeader("Actions");
+        giftGrid.addColumn(gift -> gift.getRelative() != null ? gift.getRelative().getName() : "No hay allegado")
+                .setHeader("Allegados");
 
-        // Add checkboxes for multiple selection
+
+        giftGrid.addComponentColumn(gift -> new Button("Editar", click -> openEditDialog(gift)))
+                .setHeader("Acciones");
+
+
         giftGrid.setSelectionMode(Grid.SelectionMode.MULTI);
 
         add(giftGrid);
     }
 
-    private void configureButtons() {
-        Button addButton = new Button("Add Gift", click -> openAddDialog());
-        Button deleteButton = new Button("Delete Selected Gifts", click -> deleteSelectedGifts());
-        Button backButton = new Button("Back", click -> getUI().ifPresent(ui -> ui.navigate("gift-lists")));
+    private HorizontalLayout createButtonLayout() {
+        Button addButton = new Button("Añadir regalo", click -> openAddDialog());
+        Button deleteButton = new Button("Eliminar regalos", click -> deleteSelectedGifts());
+        Button backButton = new Button("Volver", click -> getUI().ifPresent(ui -> ui.navigate("gift-lists")));
+
+        addButton.addClassName("red-button");
+        deleteButton.addClassName("red-button");
+        backButton.addClassName("red-button");
 
         HorizontalLayout buttonLayout = new HorizontalLayout(addButton, deleteButton, backButton);
-        add(buttonLayout);
+        buttonLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+        buttonLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+        buttonLayout.setWidthFull();
+
+        return buttonLayout;
     }
 
     private void updateGiftList() {
@@ -116,25 +131,25 @@ public class EditGiftView extends VerticalLayout implements HasUrlParameter<Long
         Dialog dialog = new Dialog();
         FormLayout formLayout = new FormLayout();
 
-        TextField nameField = new TextField("Gift Name");
-        TextField priceField = new TextField("Price");
-        ComboBox<Gift.Status> statusComboBox = new ComboBox<>("Status", Gift.Status.values());
-        ComboBox<Relative> relativeComboBox = new ComboBox<>("Relative");
+        TextField nameField = new TextField("Nombre");
+        TextField priceField = new TextField("Precio");
+        ComboBox<Gift.Status> statusComboBox = new ComboBox<>("Estado", Gift.Status.values());
+        ComboBox<Relative> relativeComboBox = new ComboBox<>("Allegado");
         TextField urlField = new TextField("URL");
 
-        // Load relatives of the authenticated user
+
         List<Relative> relatives = relativeService.getRelativesByUserId(user.getId());
         relativeComboBox.setItems(relatives);
         relativeComboBox.setItemLabelGenerator(Relative::getName);
 
-        // Make fields required
+
         nameField.setRequired(true);
         priceField.setRequired(true);
         statusComboBox.setRequired(true);
         relativeComboBox.setRequired(true);
         urlField.setRequired(true);
 
-        // Pre-fill fields if editing
+
         if (gift.getId() != null) {
             nameField.setValue(gift.getName());
             priceField.setValue(gift.getPrice().toString());
@@ -143,9 +158,9 @@ public class EditGiftView extends VerticalLayout implements HasUrlParameter<Long
             urlField.setValue(gift.getUrl());
         }
 
-        Button saveButton = new Button("Save", event -> {
+        Button saveButton = new Button("Guardar", event -> {
             if (nameField.isEmpty() || priceField.isEmpty() || statusComboBox.isEmpty() || relativeComboBox.isEmpty() || urlField.isEmpty()) {
-                Notification.show("All fields are required.");
+                Notification.show("Todos los campos son requeridos.");
                 return;
             }
 
@@ -161,9 +176,9 @@ public class EditGiftView extends VerticalLayout implements HasUrlParameter<Long
                 updateGiftList();
                 giftListService.updateGiftListStatus(giftList);
                 dialog.close();
-                Notification.show("Gift " + (gift.getId() == null ? "added" : "updated") + " successfully.");
+                Notification.show("Regalo " + (gift.getId() == null ? "añadido" : "actualizado") + " con éxito.");
             } catch (NumberFormatException e) {
-                Notification.show("Invalid price format. Please enter a valid number.");
+                Notification.show("Formato de precio inválido. Introduzca un formato válido.");
             }
         });
 
@@ -180,9 +195,9 @@ public class EditGiftView extends VerticalLayout implements HasUrlParameter<Long
             }
             updateGiftList();
             giftListService.updateGiftListStatus(giftList);
-            Notification.show("Selected gifts deleted");
+            Notification.show("Regalos eliminados");
         } else {
-            Notification.show("Please select gifts to delete");
+            Notification.show("Selecciona regalos para eliminar");
         }
     }
 }

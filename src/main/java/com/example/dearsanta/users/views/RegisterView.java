@@ -50,30 +50,30 @@ public class RegisterView extends VerticalLayout {
         VerticalLayout mainContent = new VerticalLayout();
         mainContent.addClassName("main-content");
 
-        H1 title = new H1("Register");
+        H1 title = new H1("Registrarse");
         title.addClassName("form-title");
 
-        TextField nameField = new TextField("Name");
+        TextField nameField = new TextField("Nombre");
         nameField.addClassName("form-field");
         nameField.setRequired(true);
-        nameField.setErrorMessage("Name is required");
+        nameField.setErrorMessage("Nombre requerido");
 
         TextField emailField = new TextField("Email");
         emailField.addClassName("form-field");
         emailField.setRequired(true);
-        emailField.setErrorMessage("Email is required");
+        emailField.setErrorMessage("Email requerido");
 
-        PasswordField passwordField = new PasswordField("Password");
+        PasswordField passwordField = new PasswordField("Contraseña");
         passwordField.addClassName("form-field");
         passwordField.setRequired(true);
-        passwordField.setErrorMessage("Password is required");
+        passwordField.setErrorMessage("Contraseña requerida");
 
-        Button registerButton = new Button("Register");
-        registerButton.addClassName("register-button");
+        Button registerButton = new Button("Registrarse");
+        registerButton.addClassName("red-button");
 
         registerButton.addClickListener(e -> {
             if (nameField.isEmpty() || emailField.isEmpty() || passwordField.isEmpty()) {
-                Notification.show("All fields are required", 3000, Notification.Position.MIDDLE);
+                Notification.show("Es necesario incluir todos los campos.", 3000, Notification.Position.MIDDLE);
             } else {
                 String name = nameField.getValue();
                 String email = emailField.getValue();

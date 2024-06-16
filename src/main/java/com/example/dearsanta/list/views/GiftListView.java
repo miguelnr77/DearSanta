@@ -7,10 +7,12 @@ import com.example.dearsanta.users.models.User;
 import com.example.dearsanta.users.services.AuthService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridMultiSelectionModel;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -24,10 +26,11 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Set;
 
-@PageTitle("Gift Lists")
+@PageTitle("Mis Listas")
 @Route(value = "gift-lists")
 @PermitAll
 @RequestScope
+@CssImport("./styles/styles.css")
 public class GiftListView extends VerticalLayout {
 
     private final GiftListService giftListService;
@@ -45,10 +48,10 @@ public class GiftListView extends VerticalLayout {
             addClassName("list-view");
             setSizeFull();
             configureGrid();
-            configureButtons();
+            configureLayout();
             updateList();
         } else {
-            // Handle unauthenticated user case
+
         }
     }
 
@@ -57,24 +60,37 @@ public class GiftListView extends VerticalLayout {
         grid.setSizeFull();
         grid.setColumns("name", "status");
 
-        // Añadir una columna de checkboxes para selección múltiple
+
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
 
-        grid.addComponentColumn(giftList -> new Button("Edit", click -> {
+        grid.addComponentColumn(giftList -> new Button("Editar", click -> {
             String giftListId = String.valueOf(giftList.getId());
             getUI().ifPresent(ui -> ui.navigate("edit-gift/" + giftListId));
-        })).setHeader("Actions");
-
-        add(grid);
+        })).setHeader("Acciones");
     }
 
-    private void configureButtons() {
-        Button addButton = new Button("Add List", click -> openAddDialog());
-        Button deleteButton = new Button("Delete Selected", click -> deleteSelectedLists());
-        Button backButton = new Button("Back", click -> getUI().ifPresent(ui -> ui.navigate("menu-usuario")));
+    private void configureLayout() {
+        H1 title = new H1("Mis Listas");
+        title.addClassName("list-title");
+
+        Button addButton = new Button("Añadir lista", click -> openAddDialog());
+        Button deleteButton = new Button("Eliminar selección", click -> deleteSelectedLists());
+        Button backButton = new Button("Vovler", click -> getUI().ifPresent(ui -> ui.navigate("menu-usuario")));
+
+        addButton.addClassName("red-button");
+        deleteButton.addClassName("red-button");
+        backButton.addClassName("red-button");
 
         HorizontalLayout buttonLayout = new HorizontalLayout(addButton, deleteButton, backButton);
-        add(buttonLayout);
+        buttonLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+        buttonLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+        buttonLayout.setWidthFull();
+
+        VerticalLayout layout = new VerticalLayout(title, buttonLayout, grid);
+        layout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        layout.setSizeFull();
+
+        add(layout);
     }
 
     private void updateList() {
@@ -84,9 +100,9 @@ public class GiftListView extends VerticalLayout {
     private void openAddDialog() {
         Dialog dialog = new Dialog();
         FormLayout formLayout = new FormLayout();
-        TextField nameField = new TextField("List Name");
+        TextField nameField = new TextField("Lista");
 
-        Button saveButton = new Button("Save", event -> {
+        Button saveButton = new Button("Guardar", event -> {
             GiftList giftList = new GiftList();
             giftList.setName(nameField.getValue());
             giftList.setStatus(GiftList.Status.PENDIENTE);
@@ -109,9 +125,9 @@ public class GiftListView extends VerticalLayout {
                 giftListService.deleteGiftList(giftList.getId());
             }
             updateList();
-            Notification.show("Selected lists deleted");
+            Notification.show("Listas seleccionadas eliminadas con exito");
         } else {
-            Notification.show("Please select lists to delete");
+            Notification.show("Selecciona listas para eliminar");
         }
     }
 }

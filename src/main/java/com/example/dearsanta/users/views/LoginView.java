@@ -17,7 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
-@PageTitle("Iniciar Sesion")
+
+@PageTitle("Iniciar Sesión")
 @Route("login")
 @CssImport("./styles/styles.css")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
@@ -38,6 +39,14 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         Div header = new Div();
         header.setText("DearSanta");
         header.addClassName("header");
+
+        // Navigation Bar
+        HorizontalLayout navBar = new HorizontalLayout();
+        navBar.addClassName("nav-bar");
+        Anchor homeLink = new Anchor("", "Inicio");
+        Anchor aboutLink = new Anchor("about", "Acerca De");
+        Anchor contactLink = new Anchor("contact", "Contacto");
+        navBar.add(homeLink, aboutLink, contactLink);
 
         // Login Form
         H1 loginHeader = new H1("Iniciar Sesión");
@@ -69,7 +78,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         footer.setText("© 2024 DearSanta. Todos los derechos reservados.");
         footer.addClassName("footer");
 
-        add(header, loginHeader, emailField, passwordField, loginButton, registerLink, errorMessage, footer);
+        add(header, navBar, loginHeader, emailField, passwordField, loginButton, registerLink, errorMessage, footer);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class ContactView extends VerticalLayout {
         mainContent.addClassName("main-content");
 
         H1 title = new H1("Contacto");
-        Paragraph description = new Paragraph("Esta es la vista de Contacto.");
+        Paragraph description = new Paragraph("Av. Universidad de Cádiz, 10, 11519 Puerto Real, Cádiz Tlf: 956 48 32 00");
 
         mainContent.add(title, description);
 

@@ -7,6 +7,8 @@ import com.example.dearsanta.relatives.service.RelativeService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.SelectionMode;
 import com.vaadin.flow.component.html.Div;
@@ -27,42 +29,66 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 @PageTitle("Mantenimiento de Allegados")
 @Route("relatives")
-@CssImport("./styles/relative-style.css")
+@CssImport("./styles/styles.css")
 public class RelativeView extends VerticalLayout {
 
-    @Autowired
-    private RelativeService relativeService;
+    private final RelativeService relativeService;
+    private final AuthService authService;
+
+    private final Grid<Relative> grid = new Grid<>(Relative.class);
 
     @Autowired
-    private AuthService authService;
+    public RelativeView(RelativeService relativeService, AuthService authService) {
+        this.relativeService = relativeService;
+        this.authService = authService;
 
-    private Grid<Relative> grid = new Grid<>(Relative.class);
-    private TextField nombreField = new TextField("Nombre");
-
-    @Autowired
-    public RelativeView(HttpServletRequest request) {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSizeFull();
 
-        Div header = new Div();
-        header.setText("DearSanta");
-        header.addClassName("header");
+        configureLayout();
+        configureGrid();
+    }
 
+    @PostConstruct
+    private void init() {
+        updateGrid();
+    }
+
+    private void configureLayout() {
         H1 title = new H1("Mantenimiento de Allegados");
-        title.addClassName("form-title");
+        title.addClassName("view-title");
 
-        Button addButton = new Button("Añadir Allegado", e -> addRelative(request));
-        Button updateButton = new Button("Modificar Allegado", e -> updateRelative(request));
-        Button deleteButton = new Button("Eliminar Allegado", e -> deleteSelectedRelatives(request));
+        Button addButton = new Button("Añadir Allegado", e -> openRelativeDialog(new Relative()));
+        Button updateButton = new Button("Modificar Allegado", e -> {
+            Relative selectedRelative = getSelectedRelative();
+            if (selectedRelative != null) {
+                openRelativeDialog(selectedRelative);
+            }
+        });
+        Button deleteButton = new Button("Eliminar Allegados", e -> deleteSelectedRelatives());
+        Button backButton = new Button("Volver", e -> getUI().ifPresent(ui -> ui.navigate("menu-usuario")));
 
-        VerticalLayout buttonLayout = new VerticalLayout(addButton, updateButton, deleteButton);
-        buttonLayout.addClassName("relative-buttons");
+        addButton.addClassName("red-button");
+        updateButton.addClassName("red-button");
+        deleteButton.addClassName("red-button");
+        backButton.addClassName("red-button");
 
-        grid.setSelectionMode(SelectionMode.MULTI);
-        grid.removeAllColumns();
-        grid.addColumn(Relative::getName).setHeader("Nombre").setAutoWidth(true);
+        HorizontalLayout buttonLayout = new HorizontalLayout(addButton, updateButton, deleteButton, backButton);
+        buttonLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+        buttonLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+        buttonLayout.setWidthFull();
+
+        add(title, buttonLayout);
+    }
+
+    private void configureGrid() {
+        grid.addClassName("relative-grid");
+        grid.setSizeFull();
+        grid.setColumns("name");
+
         grid.addComponentColumn(relative -> {
             Checkbox checkbox = new Checkbox();
             checkbox.addValueChangeListener(event -> {
@@ -75,46 +101,54 @@ public class RelativeView extends VerticalLayout {
             return checkbox;
         }).setHeader("Seleccionar");
 
-        Div gridContainer = new Div(grid);
-        gridContainer.addClassName("relative-grid");
-
-        Div mainContainer = new Div(buttonLayout, gridContainer);
-        mainContainer.addClassName("relative-container");
-
-        add(header, title, nombreField, mainContainer);
+        grid.setSelectionMode(SelectionMode.MULTI);
+        add(grid);
     }
 
-    @PostConstruct
-    private void init() {
-        updateGrid();
-    }
+    private void openRelativeDialog(Relative relative) {
+        Dialog dialog = new Dialog();
 
-    private void addRelative(HttpServletRequest request) {
-        User user = authService.getAuthenticatedUser(request);
-        if (user != null) {
-            Relative relative = new Relative();
-            relative.setName(nombreField.getValue());
-            relative.setUserId(user.getId());
-            relativeService.addRelative(relative);
-            updateGrid();
-            Notification.show("Allegado añadido");
+        FormLayout formLayout = new FormLayout();
+        TextField nameField = new TextField("Nombre");
+
+        if (relative.getId() != null) {
+            nameField.setValue(relative.getName());
         }
+
+        Button saveButton = new Button("Guardar", event -> {
+            if (nameField.isEmpty()) {
+                Notification.show("Nombre es obligatorio.");
+                return;
+            }
+
+            User user = authService.getAuthenticatedUser(getCurrentRequest());
+            if (user != null) {
+                relative.setName(nameField.getValue());
+                relative.setUserId(user.getId());
+
+                relativeService.addRelative(relative);
+                updateGrid();
+                dialog.close();
+                Notification.show("Allegado " + (relative.getId() == null ? "añadido" : "actualizado") + " con éxito.");
+            }
+        });
+
+        formLayout.add(nameField, saveButton);
+        dialog.add(formLayout);
+        dialog.open();
     }
 
-    private void updateRelative(HttpServletRequest request) {
+    private Relative getSelectedRelative() {
         Set<Relative> selectedRelatives = grid.getSelectedItems();
         if (selectedRelatives.size() == 1) {
-            Relative selected = selectedRelatives.iterator().next();
-            selected.setName(nombreField.getValue());
-            relativeService.updateRelative(selected);
-            updateGrid();
-            Notification.show("Allegado actualizado");
+            return selectedRelatives.iterator().next();
         } else {
             Notification.show("Debe seleccionar un solo allegado para actualizar");
+            return null;
         }
     }
 
-    private void deleteSelectedRelatives(HttpServletRequest request) {
+    private void deleteSelectedRelatives() {
         Set<Relative> selectedRelatives = grid.getSelectedItems();
         if (!selectedRelatives.isEmpty()) {
             List<Long> idsToDelete = new ArrayList<>();
@@ -132,11 +166,15 @@ public class RelativeView extends VerticalLayout {
     }
 
     private void updateGrid() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletRequest request = getCurrentRequest();
         User user = authService.getAuthenticatedUser(request);
         if (user != null) {
             List<Relative> relatives = relativeService.getRelativesByUserId(user.getId());
             grid.setItems(relatives);
         }
+    }
+
+    private HttpServletRequest getCurrentRequest() {
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 }

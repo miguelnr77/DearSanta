@@ -1,3 +1,5 @@
+/* styles.css */
+
 /* General Styles */
 body, html {
     margin: 0;
@@ -73,11 +75,12 @@ body, html {
     margin-top: 20px;
 }
 
-.main-content .welcome-text {
+.welcome-text {
+    margin-top: 60px;
     font-size: 28px;
     font-weight: bold;
-    margin-bottom: 20px;
     color: #000000;
+    text-align: center;
 }
 
 .main-content .description-text {
@@ -86,7 +89,7 @@ body, html {
     color: #000000;
 }
 
-.main-button {
+.main-button, .red-button {
     background-color: #A9270B;
     color: white;
     border: none;
@@ -98,7 +101,7 @@ body, html {
     margin: 10px;
 }
 
-.main-button:hover {
+.main-button:hover, .red-button:hover {
     background-color: #b22222;
 }
 
@@ -117,7 +120,7 @@ body, html {
 
 /* Form Styles */
 .form-title {
-    color: #A9270B;
+    color: #000000;
     margin-top: 20px;
 }
 
@@ -164,6 +167,17 @@ body, html {
     background-color: #b22222;
 }
 
+/* List Title */
+.list-title {
+    color: #000000;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.view-title {
+    margin-bottom: 20px;
+    color: #000000;
+    font-size: 24px;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav-bar {
