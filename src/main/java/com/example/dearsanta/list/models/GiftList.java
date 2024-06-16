@@ -71,4 +71,14 @@ public class GiftList {
     public void setGifts(List<Gift> gifts) {
         this.gifts = gifts;
     }
+
+    public void addGift(Gift gift) {
+        gifts.add(gift);
+        gift.setGiftList(this);
+    }
+
+    public void removeGift(Gift gift) {
+        gifts.remove(gift);
+        gift.setGiftList(null);
+    }
 }

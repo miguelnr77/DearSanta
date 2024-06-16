@@ -6,15 +6,23 @@ import com.example.dearsanta.list.services.GiftListService;
 import com.example.dearsanta.users.models.User;
 import com.example.dearsanta.users.services.AuthService;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridMultiSelectionModel;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
 import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.annotation.RequestScope;
+
+import java.util.Set;
 
 @PageTitle("Gift Lists")
 @Route(value = "gift-lists")
@@ -25,20 +33,22 @@ public class GiftListView extends VerticalLayout {
     private final GiftListService giftListService;
     private final AuthService authService;
     private Grid<GiftList> grid = new Grid<>(GiftList.class);
+    private User user;
 
     @Autowired
     public GiftListView(GiftListService giftListService, AuthService authService, HttpServletRequest request) {
         this.giftListService = giftListService;
         this.authService = authService;
-        User user = authService.getAuthenticatedUser(request);
+        this.user = authService.getAuthenticatedUser(request);
+
         if (user != null) {
             addClassName("list-view");
             setSizeFull();
             configureGrid();
-            add(grid);
-            updateList(user);
+            configureButtons();
+            updateList();
         } else {
-            // Manejar el caso en que no hay usuario autenticado
+            // Handle unauthenticated user case
         }
     }
 
@@ -47,18 +57,61 @@ public class GiftListView extends VerticalLayout {
         grid.setSizeFull();
         grid.setColumns("name", "status");
 
-        grid.addComponentColumn(giftList -> {
-            Button editButton = new Button("Edit");
-            editButton.addClickListener(e -> editGiftList(giftList));
-            return editButton;
-        });
+        // Añadir una columna de checkboxes para selección múltiple
+        grid.setSelectionMode(Grid.SelectionMode.MULTI);
+
+        grid.addComponentColumn(giftList -> new Button("Edit", click -> {
+            String giftListId = String.valueOf(giftList.getId());
+            getUI().ifPresent(ui -> ui.navigate("edit-gift/" + giftListId));
+        })).setHeader("Actions");
+
+        add(grid);
     }
 
-    private void updateList(User user) {
+    private void configureButtons() {
+        Button addButton = new Button("Add List", click -> openAddDialog());
+        Button deleteButton = new Button("Delete Selected", click -> deleteSelectedLists());
+        Button backButton = new Button("Back", click -> getUI().ifPresent(ui -> ui.navigate("menu-usuario")));
+
+        HorizontalLayout buttonLayout = new HorizontalLayout(addButton, deleteButton, backButton);
+        add(buttonLayout);
+    }
+
+    private void updateList() {
         grid.setItems(giftListService.findByUser(user));
     }
 
-    private void editGiftList(GiftList giftList) {
-        getUI().ifPresent(ui -> ui.navigate("edit-gift/" + giftList.getId()));
+    private void openAddDialog() {
+        Dialog dialog = new Dialog();
+        FormLayout formLayout = new FormLayout();
+        TextField nameField = new TextField("List Name");
+
+        Button saveButton = new Button("Save", event -> {
+            GiftList giftList = new GiftList();
+            giftList.setName(nameField.getValue());
+            giftList.setStatus(GiftList.Status.PENDIENTE);
+            giftList.setUser(user);
+
+            giftListService.saveGiftList(giftList);
+            updateList();
+            dialog.close();
+        });
+
+        formLayout.add(nameField, saveButton);
+        dialog.add(formLayout);
+        dialog.open();
+    }
+
+    private void deleteSelectedLists() {
+        Set<GiftList> selectedLists = grid.getSelectedItems();
+        if (!selectedLists.isEmpty()) {
+            for (GiftList giftList : selectedLists) {
+                giftListService.deleteGiftList(giftList.getId());
+            }
+            updateList();
+            Notification.show("Selected lists deleted");
+        } else {
+            Notification.show("Please select lists to delete");
+        }
     }
 }

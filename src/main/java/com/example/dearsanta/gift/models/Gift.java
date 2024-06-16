@@ -3,14 +3,11 @@ package com.example.dearsanta.gift.models;
 import com.example.dearsanta.list.models.GiftList;
 import com.example.dearsanta.relatives.models.Relative;
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
 @Entity
 public class Gift {
-
-    public enum Status {
-        POR_COMPRAR, PENDIENTE_DE_RECIBIR, RECIBIDO
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +22,16 @@ public class Gift {
     private Relative relative;
 
     private String name;
+
     @Enumerated(EnumType.STRING)
     private Status status;
+
     private BigDecimal price;
     private String url;
+
+    public enum Status {
+        POR_COMPRAR, PENDIENTE_DE_RECIBIR, RECIBIDO
+    }
 
     // Getters y setters
 

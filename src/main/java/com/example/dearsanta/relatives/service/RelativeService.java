@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RelativeService {
@@ -31,5 +32,10 @@ public class RelativeService {
 
     public List<Relative> findAll() {
         return relativeRepository.findAll();
+    }
+
+    public Relative getRelativeById(Long id) {
+        Optional<Relative> relative = relativeRepository.findById(id);
+        return relative.orElse(null);
     }
 }
