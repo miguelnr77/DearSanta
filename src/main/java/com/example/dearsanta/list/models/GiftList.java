@@ -4,7 +4,6 @@ import com.example.dearsanta.gift.models.Gift;
 import com.example.dearsanta.users.models.User;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,20 +13,21 @@ public class GiftList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     private String name;
+
+    @OneToMany(mappedBy = "giftList", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Gift> gifts;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy = "giftList", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Gift> gifts = new ArrayList<>();
-
     public enum Status {
-        CERRADA, PENDIENTE
+        PENDIENTE,
+        CERRADA
     }
 
     // Getters y setters
@@ -40,28 +40,12 @@ public class GiftList {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public List<Gift> getGifts() {
@@ -72,13 +56,19 @@ public class GiftList {
         this.gifts = gifts;
     }
 
-    public void addGift(Gift gift) {
-        gifts.add(gift);
-        gift.setGiftList(this);
+    public User getUser() {
+        return user;
     }
 
-    public void removeGift(Gift gift) {
-        gifts.remove(gift);
-        gift.setGiftList(null);
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

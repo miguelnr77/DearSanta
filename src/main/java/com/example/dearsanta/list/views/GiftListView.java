@@ -75,7 +75,7 @@ public class GiftListView extends VerticalLayout {
 
         Button addButton = new Button("Añadir lista", click -> openAddDialog());
         Button deleteButton = new Button("Eliminar selección", click -> deleteSelectedLists());
-        Button backButton = new Button("Vovler", click -> getUI().ifPresent(ui -> ui.navigate("menu-usuario")));
+        Button backButton = new Button("Volver", click -> getUI().ifPresent(ui -> ui.navigate("menu-usuario")));
 
         addButton.addClassName("red-button");
         deleteButton.addClassName("red-button");

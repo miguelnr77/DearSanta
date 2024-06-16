@@ -14,11 +14,11 @@ public class Gift {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "list_id")
+    @JoinColumn(name = "list_id", nullable = false)
     private GiftList giftList;
 
     @ManyToOne
-    @JoinColumn(name = "relative_id")
+    @JoinColumn(name = "relative_id", nullable = false)
     private Relative relative;
 
     private String name;

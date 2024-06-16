@@ -4,38 +4,33 @@ import com.example.dearsanta.relatives.models.Relative;
 import com.example.dearsanta.relatives.repositories.RelativeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RelativeService {
 
+    private final RelativeRepository relativeRepository;
+
     @Autowired
-    private RelativeRepository relativeRepository;
-
-    public void addRelative(Relative relative) {
-        relativeRepository.save(relative);
-    }
-
-    public void updateRelative(Relative relative) {
-        relativeRepository.save(relative);
-    }
-
-    public void deleteRelative(Long id) {
-        relativeRepository.deleteById(id);
+    public RelativeService(RelativeRepository relativeRepository) {
+        this.relativeRepository = relativeRepository;
     }
 
     public List<Relative> getRelativesByUserId(Long userId) {
         return relativeRepository.findByUserId(userId);
     }
 
-    public List<Relative> findAll() {
-        return relativeRepository.findAll();
+    public Relative saveRelative(Relative relative) {
+        return relativeRepository.save(relative);
     }
 
-    public Relative getRelativeById(Long id) {
-        Optional<Relative> relative = relativeRepository.findById(id);
-        return relative.orElse(null);
+    @Transactional
+    public void deleteRelative(Long id) {
+        Relative relative = relativeRepository.findById(id).orElse(null);
+        if (relative != null) {
+            relativeRepository.delete(relative);
+        }
     }
 }

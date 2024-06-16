@@ -1,6 +1,9 @@
 package com.example.dearsanta.relatives.models;
 
+import com.example.dearsanta.gift.models.Gift;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Relative {
@@ -15,7 +18,11 @@ public class Relative {
     @Column(name = "name")
     private String name;
 
-    // Getters and Setters
+    @OneToMany(mappedBy = "relative", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Gift> gifts;
+
+    // Getters y setters
+
     public Long getId() {
         return id;
     }
@@ -38,5 +45,13 @@ public class Relative {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Gift> getGifts() {
+        return gifts;
+    }
+
+    public void setGifts(List<Gift> gifts) {
+        this.gifts = gifts;
     }
 }

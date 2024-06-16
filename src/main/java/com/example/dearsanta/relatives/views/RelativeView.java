@@ -126,7 +126,7 @@ public class RelativeView extends VerticalLayout {
                 relative.setName(nameField.getValue());
                 relative.setUserId(user.getId());
 
-                relativeService.addRelative(relative);
+                relativeService.saveRelative(relative);
                 updateGrid();
                 dialog.close();
                 Notification.show("Allegado " + (relative.getId() == null ? "añadido" : "actualizado") + " con éxito.");

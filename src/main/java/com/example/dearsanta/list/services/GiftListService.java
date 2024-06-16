@@ -32,7 +32,10 @@ public class GiftListService {
 
     @Transactional
     public void deleteGiftList(Long id) {
-        giftListRepository.deleteById(id);
+        GiftList giftList = giftListRepository.findById(id).orElse(null);
+        if (giftList != null) {
+            giftListRepository.delete(giftList);
+        }
     }
 
     @Transactional(readOnly = true)

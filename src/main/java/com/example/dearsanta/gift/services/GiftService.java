@@ -4,6 +4,7 @@ import com.example.dearsanta.gift.models.Gift;
 import com.example.dearsanta.gift.repositories.GiftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,8 +26,12 @@ public class GiftService {
         return giftRepository.save(gift);
     }
 
+    @Transactional
     public void deleteById(Long id) {
-        giftRepository.deleteById(id);
+        Gift gift = giftRepository.findById(id).orElse(null);
+        if (gift != null) {
+            giftRepository.delete(gift);
+        }
     }
 
     public Gift findById(Long id) {
