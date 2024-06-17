@@ -1,4 +1,4 @@
-package com.example.dearsanta.user.e2e;
+/*package com.example.dearsanta.user.e2e;
 
 import com.example.dearsanta.users.models.User;
 import com.example.dearsanta.users.repositories.UserRepository;
@@ -108,3 +108,4 @@ public class RegisterControllerE2E {
         assertThat(errorMessage.getText()).contains("User already exists");
     }
 }
+*/

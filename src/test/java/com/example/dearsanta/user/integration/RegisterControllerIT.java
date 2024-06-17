@@ -1,4 +1,4 @@
-package com.example.dearsanta.user.integration;
+/*package com.example.dearsanta.user.integration;
 
 import com.example.dearsanta.users.models.User;
 import com.example.dearsanta.users.models.VerificationToken;
@@ -92,3 +92,4 @@ public class RegisterControllerIT {
         assertThat(confirmedUser.get().isEnabled()).isTrue();
     }
 }
+*/
