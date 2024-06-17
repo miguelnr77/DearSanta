@@ -25,6 +25,6 @@ public class RegisterController {
     @GetMapping("/confirm")
     public String confirmUser(@RequestParam String token) {
         userService.confirmUser(token);
-        return "User confirmed successfully";
+        return "Gracias por confirmar tu cuenta.";
     }
 }

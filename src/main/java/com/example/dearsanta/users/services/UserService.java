@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +32,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private HttpServletRequest request; // Inyectar HttpServletRequest
 
     @Transactional
     public String registerUser(User user) {
@@ -71,14 +75,14 @@ public class UserService {
         return false;
     }
 
-    private String generateToken() {
+    public String generateToken() {
         return UUID.randomUUID().toString();
     }
 
     private void sendVerificationEmail(String email, String token) {
-        String subject = "Complete your registration";
-        String confirmationUrl = "http://localhost:8080/api/confirm?token=" + token;
-        String message = "To confirm your account, please click the following link: " + confirmationUrl;
+        String subject = "Completa tu registro.";
+        String confirmationUrl = getBaseUrl() + "/api/confirm?token=" + token;
+        String message = "Para confirmar tu cuenta, accede al siguiente link: " + confirmationUrl;
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         try {
@@ -89,7 +93,16 @@ public class UserService {
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             e.printStackTrace();
-            throw new RuntimeException("Failed to send email");
+            throw new RuntimeException("Error al enviar el email");
         }
+    }
+
+
+    private String getBaseUrl() {
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String contextPath = request.getContextPath();
+        return scheme + "://" + serverName + (serverPort != 80 && serverPort != 443 ? ":" + serverPort : "") + contextPath;
     }
 }
