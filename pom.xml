@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.0</version>
+		<version>3.2.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>DearSanta</artifactId>
-	<version>1.5.7</version>
+	<version>1.5.7-SNAPSHOT</version>
 	<name>DearSanta</name>
 	<description>DearSanta</description>
 	<properties>
@@ -30,7 +30,6 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-spring-boot-starter</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -84,7 +83,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -112,7 +110,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<profiles>
 		<profile>
 			<id>production</id>
@@ -133,7 +130,7 @@
 					<plugin>
 						<groupId>com.vaadin</groupId>
 						<artifactId>vaadin-maven-plugin</artifactId>
-						<version>24.3.2</version>
+						<version>${vaadin.version}</version>
 						<executions>
 							<execution>
 								<id>frontend</id>
