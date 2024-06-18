@@ -12,6 +12,7 @@ DearSanta es una aplicación web para gestionar listas de regalos, ideal para oc
 - **IntelliJ IDEA**: Entorno de desarrollo integrado (IDE) utilizado para desarrollar la aplicación.
 - **Git**: Sistema de control de versiones.
 - **GitHub**: Plataforma para alojar el repositorio del proyecto.
+- **AWS**: Plataforma para el despliegue.
 
 ## Características
 - Registro de usuarios con verificación por correo electrónico
@@ -147,3 +148,13 @@ A continuación e incluyen los modelos C4:
 También a continuación se incluye el modelo de clases de la aplicación:
 
 ![Modelo de clases](https://github.com/miguelnr77/DearSanta/blob/master/docs/modeloclases.png)
+
+### Despliegue
+
+Para realizar el despliegue de la app, hemos hecho uso de AWS Academy que nos facilita el mismo. Debemos configurar nuestro entorno de aplicación con todo lo necesario para su funcionamiento. A continuación se muestra una imagen del despliegue en nuestro entorno:
+
+![Despliegue]()
+
+También tenemos una imagen de la aplicación en ejecución:
+
+![Despliegue]()
