@@ -93,7 +93,7 @@ Aunque los plazos han variado un poco, a sido el camino a seguir durante todo es
 
 ### Mis Listas
 
-    - Se ueden crear listas introduciendo su nombre.
+    - Se pueden crear listas introduciendo su nombre.
     - También existe la posibilidad de modificar el nombre de las listas y/o borrarlas.
 
 ### Editar Regalos
@@ -113,7 +113,7 @@ Se han aplicado estilos mediante css para darle esa apariencia.
 
 ### Diagramas de casos de uso 
 
-Acontinuación se incluyen los diagramas de caso de uso de la aplicación:
+A continuación se incluyen los diagramas de caso de uso de la aplicación:
 
 #### Alto nivel
 
@@ -133,7 +133,7 @@ Acontinuación se incluyen los diagramas de caso de uso de la aplicación:
 
 ### Modelos C4
 
-A continuación e incluyen los modelos C4:
+A continuación se incluyen los modelos C4 de la aplicación:
 
 #### Contexto
 
@@ -153,8 +153,11 @@ También a continuación se incluye el modelo de clases de la aplicación:
 
 Para realizar el despliegue de la app, hemos hecho uso de AWS Academy que nos facilita el mismo. Debemos configurar nuestro entorno de aplicación con todo lo necesario para su funcionamiento. A continuación se muestra una imagen del despliegue en nuestro entorno:
 
-![Despliegue]()
+![Despliegue](https://github.com/miguelnr77/DearSanta/blob/master/docs/despliegue1.JPG)
 
 También tenemos una imagen de la aplicación en ejecución:
 
-![Despliegue]()
+![Despliegue](https://github.com/miguelnr77/DearSanta/blob/master/docs/despliegue2.JPG)
+
+
+Gracias a todos estos pasos hemos podido implementar nuestra aplicación web DearSanta de manera correcta.
