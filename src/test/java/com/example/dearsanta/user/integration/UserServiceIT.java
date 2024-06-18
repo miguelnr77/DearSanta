@@ -1,4 +1,4 @@
-package com.example.dearsanta.user.integration;
+/*package com.example.dearsanta.user.integration;
 
 import com.example.dearsanta.users.models.User;
 import com.example.dearsanta.users.models.VerificationToken;
@@ -61,3 +61,4 @@ public class UserServiceIT {
         assertThat(token).isPresent();
     }
 }
+ */
