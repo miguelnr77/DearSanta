@@ -63,6 +63,9 @@
     <profiles>
         <profile>
             <id>production</id>
+            <properties>
+                <env>production</env>
+            </properties>
             <dependencies>
                 <dependency>
                     <groupId>com.vaadin</groupId>
