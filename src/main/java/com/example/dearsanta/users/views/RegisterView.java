@@ -1,5 +1,6 @@
 package com.example.dearsanta.users.views;
 
+import com.example.dearsanta.users.services.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Anchor;
@@ -14,16 +15,19 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
+
 @PageTitle("Registrarse")
 @Route("/register")
 @CssImport("./styles/styles.css")
 public class RegisterView extends VerticalLayout {
 
     private final RestTemplate restTemplate;
+    private final UserService userService;
 
     @Autowired
-    public RegisterView(RestTemplate restTemplate) {
+    public RegisterView(RestTemplate restTemplate, UserService userService) {
         this.restTemplate = restTemplate;
+        this.userService = userService;
 
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSizeFull();
@@ -80,7 +84,8 @@ public class RegisterView extends VerticalLayout {
                 String password = passwordField.getValue();
 
                 // Send a registration request to the backend
-                String url = "http://localhost:8080/api/register?name=" + name + "&email=" + email + "&password=" + password;
+                String baseUrl = userService.getBaseUrl();
+                String url = baseUrl + "/api/register?name=" + name + "&email=" + email + "&password=" + password;
                 try {
                     String response = restTemplate.postForObject(url, null, String.class);
                     Notification.show(response);

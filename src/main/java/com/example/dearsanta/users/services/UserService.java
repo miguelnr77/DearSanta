@@ -98,7 +98,7 @@ public class UserService {
     }
 
 
-    private String getBaseUrl() {
+    public String getBaseUrl() {
         String scheme = request.getScheme();
         String serverName = request.getServerName();
         int serverPort = request.getServerPort();
