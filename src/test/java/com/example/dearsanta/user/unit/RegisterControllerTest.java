@@ -1,4 +1,4 @@
-/*package com.example.dearsanta.user.unit;
+package com.example.dearsanta.user.unit;
 
 import com.example.dearsanta.users.controllers.RegisterController;
 import com.example.dearsanta.users.models.User;
@@ -57,4 +57,3 @@ public class RegisterControllerTest {
         verify(userService).confirmUser(anyString());
     }
 }
-*/

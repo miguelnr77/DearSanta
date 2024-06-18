@@ -5,7 +5,6 @@ import com.example.dearsanta.users.models.VerificationToken;
 import com.example.dearsanta.users.repositories.UserRepository;
 import com.example.dearsanta.users.repositories.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -33,8 +33,8 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Value("${app.base.url}")
-    private String baseUrl;
+    @Autowired
+    private HttpServletRequest request; // Inyectar HttpServletRequest
 
     @Transactional
     public String registerUser(User user) {
@@ -81,7 +81,7 @@ public class UserService {
 
     private void sendVerificationEmail(String email, String token) {
         String subject = "Completa tu registro.";
-        String confirmationUrl = baseUrl + "/api/confirm?token=" + token;
+        String confirmationUrl = getBaseUrl() + "/api/confirm?token=" + token;
         String message = "Para confirmar tu cuenta, accede al siguiente link: " + confirmationUrl;
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -95,5 +95,14 @@ public class UserService {
             e.printStackTrace();
             throw new RuntimeException("Error al enviar el email");
         }
+    }
+
+
+    private String getBaseUrl() {
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String contextPath = request.getContextPath();
+        return scheme + "://" + serverName + (serverPort != 80 && serverPort != 443 ? ":" + serverPort : "") + contextPath;
     }
 }
